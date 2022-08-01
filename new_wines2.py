@@ -3,9 +3,12 @@ from tkinter import *
 from tkinter import ttk
 import sqlite3
 from tkinter import messagebox
+from webbrowser import BackgroundBrowser
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 from tkcalendar import *
+import tkinter.font as font
+
 
 root = Tk()
 
@@ -16,7 +19,7 @@ positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
 positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 
 root.title('Winelist')
-root.geometry("1200x890")
+root.geometry("1350x850")
 
 
 #Database###################
@@ -98,7 +101,8 @@ style = ttk.Style()
 
 # pick a theme
 
-style.theme_use('clam')
+style.theme_use('xpnative')
+
 
 #configure treeviw colours
 
@@ -112,10 +116,10 @@ style.map('Treview')
 noteb = ttk.Notebook(root) 
 
 #### TAB 1
-t1 = Frame(noteb) 
+t1 = Frame(noteb, bg='#FCFCFC') 
 
 #### TAB 2
-t2 = Frame(noteb) 
+t2 = Frame(noteb, bg='#FCFCFC') 
 
 #### NAME AND PACK TABS
 noteb.add(t1, text ='Statistics') 
@@ -123,7 +127,7 @@ noteb.add(t2, text ='Inventory')
 noteb.pack(pady=55, expand=True) 
 
 # treeview frame
-tree_frame = Frame(t2)
+tree_frame = Frame(t2, bg='#FCFCFC')
 tree_frame.pack(pady=10, padx=0, side=TOP, expand=True)
 
 #create a treeview scrollbar
@@ -132,7 +136,7 @@ tree_scroll.pack(side=RIGHT, fill=Y)
 
 #create the treeview
 my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='extended', height=25)
-my_tree.pack(pady=10, padx=0, fill='both', side=TOP)
+my_tree.pack(pady=0, padx=0, fill='both', side=TOP)
 
 #configure scrollbar
 tree_scroll.config(command=my_tree.yview)
@@ -158,40 +162,42 @@ my_tree.heading("Quantity", text="Quantity", anchor=CENTER)
 
 # create  striped row tags
 my_tree.tag_configure('oddrow', background= 'white')
-my_tree.tag_configure('evenrow', background='pink')
+my_tree.tag_configure('evenrow',background='lightgrey', foreground='black')
 
 # add record entry boxes
-data_frame = LabelFrame(t2, text="Information")
-data_frame.pack(pady=0, padx=20, side=TOP)
+data_frame = Frame(t2, bg='#FCFCFC')
+data_frame.pack(pady=0, padx=0, side=TOP)
 
-name_label = Label(data_frame, text="Name")
-name_label.grid(row=0, column=0, padx=10, pady=10)
+name_label = Label(data_frame, text="Name",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+name_label.grid(row=1, column=0, padx=0, pady=10)
 name_entry = ttk.Entry(data_frame)
-name_entry.grid(row=0, column=1, padx=10, pady=10)
+name_entry.grid(row=1, column=1, padx=20, pady=10)
 
-type_label = Label(data_frame, text="Type")
-type_label.grid(row=0, column=2, padx=10, pady=10)
+type_label = Label(data_frame, text="Type",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+type_label.grid(row=1, column=2, padx=0, pady=10)
 type_entry = ttk.Entry(data_frame)
-type_entry.grid(row=0, column=3, padx=10, pady=10)
+type_entry.grid(row=1, column=3, padx=20, pady=10)
 
-id_label = Label(data_frame, text="ID")
-id_label.grid(row=0, column=4, padx=10, pady=10)
+id_label = Label(data_frame, text="ID",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+id_label.grid(row=1, column=4, padx=0, pady=10)
+
 id_entry = ttk.Entry(data_frame)
+id_entry.grid(row=1, column=5, padx=20, pady=10)
 
-id_entry.grid(row=0, column=5, padx=10, pady=10)
+price_label = Label(data_frame, text="Price",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+price_label.grid(row=1, column=6, padx=0, pady=10)
 
-price_label = Label(data_frame, text="Price")
-price_label.grid(row=0, column=6, padx=10, pady=10)
 price_entry = ttk.Entry(data_frame)
-price_entry.grid(row=0, column=7, padx=10, pady=10)
+price_entry.grid(row=1, column=7, padx=20, pady=10)
 
-quantity_label = Label(data_frame, text="Quantity")
-quantity_label.grid(row=0, column=8, padx=10, pady=10)
+quantity_label = Label(data_frame, text="Quantity",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+quantity_label.grid(row=1, column=8, padx=0, pady=10)
+
 quantity_entry = ttk.Entry(data_frame)
-quantity_entry.grid(row=0, column=9, padx=10, pady=10)
+quantity_entry.grid(row=1, column=9, padx=20, pady=10)
 
-id_caution_label = Label(data_frame, text="*ALWAYS LEAVE ID BOX EMPTY !")
-id_caution_label.grid(row=1, column= 5)
+id_caution_label = Label(data_frame, text="*ALWAYS LEAVE ID BOX EMPTY !",font=("Times New Roman", 12), background='#FCFCFC', foreground='#8A3333')
+#id_caution_label.grid(row=0, column=1)
 #remove one record
 def remove_one():
     x = my_tree.selection()[0]
@@ -378,20 +384,20 @@ def delete_sale():
 
 
 #add buttons 
-button_frame = Frame(t2)
+button_frame = Frame(t2, bg='#FCFCFC')
 button_frame.pack(pady=0, padx=10, side=TOP )
 
-add_button = ttk.Button(button_frame, text='Add Wine', command=add_record, width=38)
-add_button.grid(row=0, column=0, padx=10 , pady=30)
+add_button = Button(button_frame, text='Add Wine', command=add_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+add_button.grid(row=0, column=0, padx=31 , pady=30)
 
-update_button = ttk.Button(button_frame, text='Update Wine', command=update_record, width=38)
-update_button.grid(row=0, column=1, padx=10, pady=30)
+update_button = Button(button_frame, text='Update Wine', command=update_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+update_button.grid(row=0, column=1, padx=31, pady=30)
 
-remove_one_button = ttk.Button(button_frame, text='Remove Selected', command=remove_one, width=38)
-remove_one_button.grid(row=0, column=2, padx=10,  pady=30)
+remove_one_button = Button(button_frame, text='Remove Selected', command=remove_one, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+remove_one_button.grid(row=0, column=2, padx=31,  pady=30)
 
-select_record_button = ttk.Button(button_frame, text='Clear Text', command=clear_entries, width=38)
-select_record_button.grid(row=0, column=3, padx=10,  pady=30)
+select_record_button = Button(button_frame, text='Clear Text', command=clear_entries, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+select_record_button.grid(row=0, column=3, padx=31,  pady=30)
 
 #bind the treeview
 my_tree.bind("<ButtonRelease-1>", select_record)
@@ -453,25 +459,25 @@ def query_history():
     conn.close()
 
 #### FRAME FOR LISTBOX
-frame1 = LabelFrame(t1, text="Record A Sale")
+frame1 = Frame(t1, bg='#FCFCFC')
 frame1.pack(fill='both', padx=20, pady=30)
 
 ##### FRAME FOR TOP THINGS
-frame_top = Frame(frame1)
+frame_top = Frame(frame1, bg='#FCFCFC')
 frame_top.pack(side=LEFT, padx=20)
 
 #### FRAME FOR LOGO
-logo_frame = Frame(frame1)
+logo_frame = Frame(frame1, bg='#FCFCFC')
 logo_frame.pack(side=RIGHT, padx=20)
 
 load= Image.open("home_logo.png")
 render = ImageTk.PhotoImage(load)
-img = Label(logo_frame, image=render)
+img = Label(logo_frame, image=render, bg='#FCFCFC')
 img.pack()
 
 
 #LISTBOX FOR HISTORY
-listb = Listbox(frame_top, width=70, height=15)
+listb = Listbox(frame_top, width=73, height=15)
 conn = sqlite3.connect('tree_crm.db')
 c = conn.cursor()
 c.execute("SELECT rowid, quantity, date, name FROM sales")
@@ -486,38 +492,47 @@ for record in records:
     x+1
 conn.commit()
 conn.close()
-listb.pack(padx=60, pady=50, side=BOTTOM)
+listb.pack(pady=0, side=BOTTOM, fill='both')
+
+#Label for combo
+combo_lbl = Label(frame_top, text="Sales", bg='#8A3333', fg='#FCFCFC',font=("Times New Roman", 13))
+combo_lbl.pack(pady=0, padx=0, side=TOP, fill='x')
 
 # COMBO BOX TO SELECT WINE
 combo = ttk.Combobox(frame_top, values=wines_stock, state = "readonly", width=70)
-combo.set("Pick an Option")
-combo.pack(pady=10, padx=0, side=TOP)
+combo.pack(pady=25, padx=0, side=TOP, fill='x')
 
 # SCROLLBAR TO CHOSE QUANTITY FOR DB
-tkScale = Scale(frame_top, from_=0, to=10, orient=HORIZONTAL, length=440)
-tkScale.pack(pady=20, padx=20,side=TOP)
+tkScale = Scale(frame_top, from_=0, to=10, orient=HORIZONTAL, length=460, bg='white', fg='black')
+tkScale.pack(pady=5, padx=0,side=TOP, fill='x')
+
 
 # CALENDAR TO CHOSE DATE FOR DB
-cal = DateEntry(frame_top, width=70, background='darkblue',
+cal = DateEntry(frame_top, background='darkred',
             foreground='white', borderwidth=2, locale='en_UK', date_pattern='dd/MM/yyyy')
-cal.pack(pady=10, padx=20, side=TOP)
+cal.pack(pady=25, padx=0, side=TOP, fill='x')
 
 #### FRAME FOR GRAPHS
-button_frame = Frame(frame_top)
-button_frame.pack(side=TOP, pady=20)
+button_frame = Frame(frame_top, bg='#FCFCFC')
+button_frame.pack(side=LEFT, padx=0)
 
 ### FRAME FOR DELETE BUTTON
-button_frame2 = Frame(frame_top)
-button_frame2.pack(side=TOP, pady=20)
+button_frame2 = Frame(frame_top, bg='#FCFCFC')
+button_frame2.pack(side=RIGHT,  padx=0)
+
+myFont = font.Font(family='Times New Roman')
 
 # BUTTON TO RECORD A SALE FOR DB
-sales_but = ttk.Button(button_frame, text="Wines Sold", command=sale, width=30)
-sales_but.pack(pady=0, padx=17, side=LEFT)
+sales_but = Button(button_frame, text="Wines Sold", command=sale, width=15, height=1, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+sales_but.pack(pady=0, padx=0, side=LEFT)
 
-graph_button = ttk.Button(button_frame, text='Graph', command=graph, width=30)
-graph_button.pack(pady=0, padx=17, side=RIGHT)
 
-delete_sale_button = ttk.Button(button_frame2, text='Delete Selected Sale', command=delete_sale, width=70)
-delete_sale_button.pack(pady=0, padx=20, side=BOTTOM)
+graph_photo = PhotoImage(file = r"graph.png")
+graph_button = Button(button_frame2, text='Graph', command=graph, image=graph_photo, width=70 , bg='#8A3333', fg='#FCFCFC', font='myfont')
+graph_button.pack(pady=10, padx=0, side=RIGHT)
+
+delete_photo = PhotoImage(file = r"bin.png")
+delete_sale_button = Button(button_frame2, text='Delete Selected Sale', command=delete_sale, width=70,  image=delete_photo, bg='#8A3333', fg='#FCFCFC', font='myfont')
+delete_sale_button.pack(pady=0, padx=20, side=RIGHT)
 
 root.mainloop()
