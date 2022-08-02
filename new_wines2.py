@@ -20,7 +20,7 @@ positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 
 root.title('Winelist')
 root.geometry("1350x850")
-
+root.iconbitmap("home_logo.ico")
 
 #Database###################
 
@@ -99,18 +99,18 @@ def query_database():
 # add style
 style = ttk.Style()
 
+style.configure("Treeview", highlightthickness=0, bd=0, font=('Times New Roman', 13)) 
 # pick a theme
 
-style.theme_use('xpnative')
+f = font.Font(family='Times New Roman', size=14)
 
+style.configure('.', font=f)
+#style.theme_use('xpnative')
 
 #configure treeviw colours
-
 style.configure('Treview')
-
 # change selected colour
 style.map('Treview')
-
 
 ######## CREATE NOTEBOOK FOR TABS
 noteb = ttk.Notebook(root) 
@@ -128,15 +128,15 @@ noteb.pack(pady=55, expand=True)
 
 # treeview frame
 tree_frame = Frame(t2, bg='#FCFCFC')
-tree_frame.pack(pady=10, padx=0, side=TOP, expand=True)
+tree_frame.pack(pady=0, padx=0, side=TOP, expand=True)
 
 #create a treeview scrollbar
 tree_scroll = Scrollbar(tree_frame)
-tree_scroll.pack(side=RIGHT, fill=Y)
+tree_scroll.pack(side=RIGHT, fill='y', pady=0)
 
 #create the treeview
 my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='extended', height=25)
-my_tree.pack(pady=0, padx=0, fill='both', side=TOP)
+my_tree.pack(pady=0, padx=0, fill='x', side=TOP)
 
 #configure scrollbar
 tree_scroll.config(command=my_tree.yview)
@@ -166,38 +166,33 @@ my_tree.tag_configure('evenrow',background='lightgrey', foreground='black')
 
 # add record entry boxes
 data_frame = Frame(t2, bg='#FCFCFC')
-data_frame.pack(pady=0, padx=0, side=TOP)
+data_frame.pack(pady=15, padx=0, side=TOP)
 
-name_label = Label(data_frame, text="Name",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
-name_label.grid(row=1, column=0, padx=0, pady=10)
-name_entry = ttk.Entry(data_frame)
-name_entry.grid(row=1, column=1, padx=20, pady=10)
+name_label = Label(data_frame, text="Name:",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+name_label.pack(pady=15, side=LEFT)
+name_entry = Entry(data_frame, font=('Times New Roman',12, "bold"))
+name_entry.pack(pady=15, side=LEFT)
 
-type_label = Label(data_frame, text="Type",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
-type_label.grid(row=1, column=2, padx=0, pady=10)
-type_entry = ttk.Entry(data_frame)
-type_entry.grid(row=1, column=3, padx=20, pady=10)
+type_label = Label(data_frame, text="Type:",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+type_label.pack(pady=15, side=LEFT)
+type_entry = Entry(data_frame, font=('Times New Roman',12, "bold"))
+type_entry.pack(pady=15, side=LEFT)
 
-id_label = Label(data_frame, text="ID",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
-id_label.grid(row=1, column=4, padx=0, pady=10)
+id_label = Label(data_frame, text="ID:",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+id_label.pack(pady=15, side=LEFT)
+id_entry = Entry(data_frame, font=('Times New Roman',12, "bold"))
+id_entry.pack(pady=15, side=LEFT)
 
-id_entry = ttk.Entry(data_frame)
-id_entry.grid(row=1, column=5, padx=20, pady=10)
+price_label = Label(data_frame, text="Price:",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+price_label.pack(pady=15, side=LEFT)
+price_entry = Entry(data_frame, font=('Times New Roman',12, "bold"))
+price_entry.pack(pady=15, side=LEFT)
 
-price_label = Label(data_frame, text="Price",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
-price_label.grid(row=1, column=6, padx=0, pady=10)
+quantity_label = Label(data_frame, text="Quantity:",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
+quantity_label.pack(pady=15, side=LEFT)
+quantity_entry = Entry(data_frame, font=('Times New Roman',12, "bold"))
+quantity_entry.pack(pady=15, side=LEFT)
 
-price_entry = ttk.Entry(data_frame)
-price_entry.grid(row=1, column=7, padx=20, pady=10)
-
-quantity_label = Label(data_frame, text="Quantity",font=("Times New Roman", 12), background='#FCFCFC', foreground='black')
-quantity_label.grid(row=1, column=8, padx=0, pady=10)
-
-quantity_entry = ttk.Entry(data_frame)
-quantity_entry.grid(row=1, column=9, padx=20, pady=10)
-
-id_caution_label = Label(data_frame, text="*ALWAYS LEAVE ID BOX EMPTY !",font=("Times New Roman", 12), background='#FCFCFC', foreground='#8A3333')
-#id_caution_label.grid(row=0, column=1)
 #remove one record
 def remove_one():
     x = my_tree.selection()[0]
@@ -385,19 +380,19 @@ def delete_sale():
 
 #add buttons 
 button_frame = Frame(t2, bg='#FCFCFC')
-button_frame.pack(pady=0, padx=10, side=TOP )
+button_frame.pack(pady=0, padx=0, side=TOP)
 
-add_button = Button(button_frame, text='Add Wine', command=add_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
-add_button.grid(row=0, column=0, padx=31 , pady=30)
+add_button = Button(button_frame, text='Add Wine', command=add_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+add_button.pack(pady=15, padx=25 ,side=LEFT)
 
-update_button = Button(button_frame, text='Update Wine', command=update_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
-update_button.grid(row=0, column=1, padx=31, pady=30)
+update_button = Button(button_frame, text='Update Wine', command=update_record, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+update_button.pack(pady=15, padx=25, side=LEFT)
 
-remove_one_button = Button(button_frame, text='Remove Selected', command=remove_one, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
-remove_one_button.grid(row=0, column=2, padx=31,  pady=30)
+remove_one_button = Button(button_frame, text='Remove Selected', command=remove_one, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+remove_one_button.pack(pady=15, padx=25, side=LEFT)
 
-select_record_button = Button(button_frame, text='Clear Text', command=clear_entries, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
-select_record_button.grid(row=0, column=3, padx=31,  pady=30)
+select_record_button = Button(button_frame, text='Clear Text', command=clear_entries, width=22, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+select_record_button.pack(pady=15, padx=25, side=LEFT)
 
 #bind the treeview
 my_tree.bind("<ButtonRelease-1>", select_record)
@@ -477,7 +472,7 @@ img.pack()
 
 
 #LISTBOX FOR HISTORY
-listb = Listbox(frame_top, width=73, height=15)
+listb = Listbox(frame_top, width=73, height=15, font=('Times New Roman', 13), selectbackground="DarkRed")
 conn = sqlite3.connect('tree_crm.db')
 c = conn.cursor()
 c.execute("SELECT rowid, quantity, date, name FROM sales")
@@ -492,40 +487,41 @@ for record in records:
     x+1
 conn.commit()
 conn.close()
-listb.pack(pady=0, side=BOTTOM, fill='both')
+listb.pack(pady=0, side=TOP, fill='both')
 
 #Label for combo
-combo_lbl = Label(frame_top, text="Sales", bg='#8A3333', fg='#FCFCFC',font=("Times New Roman", 13))
-combo_lbl.pack(pady=0, padx=0, side=TOP, fill='x')
+combo_lbl = Label(frame_top, text="Pick A Wine, Quantity & Date From Below", bg='#8A3333', fg='#FCFCFC', font=("Times New Roman", 13, "bold"))
+combo_lbl.pack(pady=20, padx=0, side=TOP, fill='x')
 
 # COMBO BOX TO SELECT WINE
-combo = ttk.Combobox(frame_top, values=wines_stock, state = "readonly", width=70)
-combo.pack(pady=25, padx=0, side=TOP, fill='x')
+fontExample = ("Times New Roman", 13, "bold")
+root.option_add("*TCombobox*Listbox*Font", fontExample)
+combo = ttk.Combobox(frame_top, values=wines_stock, state = "readonly", width=70, font=fontExample)
+combo.pack(pady=10, padx=0, side=TOP, fill='x')
 
 # SCROLLBAR TO CHOSE QUANTITY FOR DB
-tkScale = Scale(frame_top, from_=0, to=10, orient=HORIZONTAL, length=460, bg='white', fg='black')
+tkScale = Scale(frame_top, from_=0, to=10, orient=HORIZONTAL, length=460, bg='white', fg='black', font=('Times New Roman', 12))
 tkScale.pack(pady=5, padx=0,side=TOP, fill='x')
 
 
 # CALENDAR TO CHOSE DATE FOR DB
 cal = DateEntry(frame_top, background='darkred',
-            foreground='white', borderwidth=2, locale='en_UK', date_pattern='dd/MM/yyyy')
+            foreground='white', borderwidth=2, locale='en_UK', date_pattern='dd/MM/yyyy', font=('Times New Roman', 12))
 cal.pack(pady=25, padx=0, side=TOP, fill='x')
 
 #### FRAME FOR GRAPHS
 button_frame = Frame(frame_top, bg='#FCFCFC')
-button_frame.pack(side=LEFT, padx=0)
+button_frame.pack(side=RIGHT, pady=0)
 
 ### FRAME FOR DELETE BUTTON
 button_frame2 = Frame(frame_top, bg='#FCFCFC')
-button_frame2.pack(side=RIGHT,  padx=0)
+button_frame2.pack(side=RIGHT,  pady=0)
 
-myFont = font.Font(family='Times New Roman')
+myFont = font.Font(family=('Times New Roman'))
 
 # BUTTON TO RECORD A SALE FOR DB
-sales_but = Button(button_frame, text="Wines Sold", command=sale, width=15, height=1, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12))
+sales_but = Button(button_frame2, text="Wines Sold", command=sale, width=15, height=1, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
 sales_but.pack(pady=0, padx=0, side=LEFT)
-
 
 graph_photo = PhotoImage(file = r"graph.png")
 graph_button = Button(button_frame2, text='Graph', command=graph, image=graph_photo, width=70 , bg='#8A3333', fg='#FCFCFC', font='myfont')
@@ -533,6 +529,12 @@ graph_button.pack(pady=10, padx=0, side=RIGHT)
 
 delete_photo = PhotoImage(file = r"bin.png")
 delete_sale_button = Button(button_frame2, text='Delete Selected Sale', command=delete_sale, width=70,  image=delete_photo, bg='#8A3333', fg='#FCFCFC', font='myfont')
-delete_sale_button.pack(pady=0, padx=20, side=RIGHT)
+delete_sale_button.pack(pady=20, padx=20, side=LEFT)
+
+export_btn = Button(button_frame, text='Export Data', width=15, height=1, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+export_btn.pack(side=RIGHT)
+
+import_btn = Button(button_frame, text='Import Data', width=15, height=1, bg='#8A3333', fg='#FCFCFC', font=('Times New Roman',12, "bold"))
+import_btn.pack(side=RIGHT, padx=15)
 
 root.mainloop()
