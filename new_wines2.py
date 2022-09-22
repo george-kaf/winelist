@@ -522,5 +522,4 @@ my_tree.bind("<ButtonRelease-1>", select_record)
 query_history()
 query_database()
 
-
 app.mainloop()
