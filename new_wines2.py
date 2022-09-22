@@ -12,7 +12,6 @@ import datetime
 
 app = Tk()
 app.title("Winelist")
-app.iconbitmap("home_logo.ico")
 app.state('zoomed') 
 
 # CREATE TABLES
@@ -51,9 +50,9 @@ def query_database():
 
     for record in records:
         if count % 2 ==0:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[1], record[2], record[0], record[4], record[5]), tags=('evenrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[1], record[2], record[0], str(record[4]), record[5]), tags=('evenrow',))
         else:
-            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[1], record[2], record[0], record[4], record[5]), tags=('oddrow',))
+            my_tree.insert(parent='', index='end', iid=count, text='', values=(record[1], record[2], record[0], str(record[4]), record[5]), tags=('oddrow',))
         #increment counter
         count +=1
 
@@ -115,7 +114,6 @@ def update_record():
         type = :type,
         price = :price,
         quantity = :quantity
-
         WHERE oid = :oid""",
         {
             'name':name_entry.get(),
@@ -136,6 +134,9 @@ def update_record():
     price_entry.delete(0, END)
     quantity_entry.delete(0, END)
 
+    query_database()
+    query_history()
+
 def add_record():
 
     conn = sqlite3.connect('winelist.db')
@@ -146,7 +147,7 @@ def add_record():
         'type':type_entry.get(),
         'id':id_entry.get(),
         'price':price_entry.get(),
-        'quantity':quantity_entry.get(),
+        'quantity':quantity_entry.get()+'€',
     }
      )
 
@@ -161,8 +162,8 @@ def add_record():
     quantity_entry.delete(0, END)
 
     my_tree.delete(*my_tree.get_children())
-
     query_database()
+
 
 def sale():
 
@@ -182,7 +183,6 @@ def sale():
 
     c.execute("""UPDATE wines SET
     quantity = :quantity
-
     WHERE rowid = :rowid""",
     {
         'quantity':new_quan,
@@ -315,8 +315,8 @@ frame_top4.pack( pady=0, padx=0, fill='both', expand=True, side=BOTTOM)
 frame_top_left = Frame(frame_top3, background='white')
 frame_top_left.pack(side=LEFT, fill='both', expand=True)
 
-frame_top_right = Frame(frame_top3, background='#FFEDEC')
-frame_top_right.pack(fill='both', expand=True, side=RIGHT, pady=20)
+frame_top_right = Frame(frame_top3, background='#FFDBE9')
+frame_top_right.pack(fill='both', expand=True, side=RIGHT, pady=20, padx=20)
 
 combo_lbl_frame = Frame(frame_top2, background='white') 
 combo_lbl_frame.pack(side=LEFT, padx=0, pady=20)
@@ -336,7 +336,6 @@ combo_lbl.pack(padx=40, side=LEFT)
 fontExample = ("Cambria", 14)
 app.option_add("*TCombobox*Listbox*Font", fontExample)
 combo = ttk.Combobox(sales_input_frame, values=wines_stock, state = "readonly", width=40, font=('Cambria', 15), background='red')
-combo.set(wines_stock[0])
 combo.grid(column=0, row=0, pady=40, padx=20)
 
 s.configure('My.TSpinbox', arrowsize=15,  fieldbackground='lightgrey3')
@@ -392,33 +391,32 @@ my_hist_tree.tag_configure('evenrow',background='#EEE9ED', foreground='black', f
 
 myFont = font.Font(family=('Cambria'))
 
-from_to_cal_frame = Frame(frame_top_right, background='#FFEDEC')
+from_to_cal_frame = Frame(frame_top_right, background='#FFDBE9')
 from_to_cal_frame.pack(pady=40)
 
-sel_wine_label = Label(from_to_cal_frame, text='Select Wine:', background='#FFEDEC')
+sel_wine_label = Label(from_to_cal_frame, text='Select Wine:', background='#FFDBE9')
 sel_wine_label.pack(pady=5)
 
 fontExample = ("Cambria", 14)
 app.option_add("*TCombobox*Listbox*Font", fontExample)
 combo2 = ttk.Combobox(from_to_cal_frame, values=wines_stock, state = "readonly", width=40, font=('Cambria', 15), background='red')
-combo2.set(wines_stock[0])
 combo2.pack(pady=5)
 
-from_label = Label(from_to_cal_frame, text='From:', background='#FFEDEC')
+from_label = Label(from_to_cal_frame, text='From:', background='#FFDBE9')
 from_label.pack(pady=5)
 
-from_cal = DateEntry(from_to_cal_frame, background='#FFEDEC',
+from_cal = DateEntry(from_to_cal_frame, background='#FFDBE9',
             foreground='black', borderwidth=2, style='my.DateEntry', state = "readonly", locale='el_GR', date_pattern='d/M/yy', font=('Cambria', 15))
 from_cal.pack(fill='x', expand=True, pady=5)
 
-to_label = Label(from_to_cal_frame, text='To:', background='#FFEDEC')
+to_label = Label(from_to_cal_frame, text='To:', background='#FFDBE9')
 to_label.pack(pady=5)
 
-to_cal = DateEntry(from_to_cal_frame, background='#FFEDEC',
+to_cal = DateEntry(from_to_cal_frame, background='#FFDBE9',
             foreground='black', borderwidth=2, style='my.DateEntry', state = "readonly", locale='el_GR', date_pattern='d/M/yy', font=('Cambria', 15))
 to_cal.pack(fill='x', expand=True, pady=5)
 
-right_button_frame = Frame(frame_top_right, background='#FFEDEC')
+right_button_frame = Frame(frame_top_right, background='#FFDBE9')
 right_button_frame.pack(side=TOP, padx=0, pady=0)
 
 wine_graph_button = Button(right_button_frame, text="Selected Wine's Graph", command=graph, background='#751824',fg='white', font=('Cambria',13, 'bold'))
